@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<f:view>
+    <script type="text/javascript">
+        function yourJavaScriptFuntion(id, completed) {
+            alert(completed);
+        }
+    </script>
+    <h:form>
+        <h:outputLabel value="Task Todo"/>
+        <h:inputText id="messageInput" value="#{helloController.message}"/>
+        <a4j:commandButton execute="messageInput" render="panelBox" value="Submit"
+                           action="#{helloController.saveTask}"/>
+    </h:form>
+
+    <h:panelGrid id="panelBox">
+
+        <rich:dataTable value="#{helloController.todoList}"
+                        styleClass="tableInput" var="todo" iterationStatusVar="i"
+                        id="bankAccInput">
+            <rich:column>
+                <h:selectBooleanCheckbox title="#{todo.task}" value="#{todo.completed}">
+                    <a4j:ajax event="click" listener="#{helloController.doneEachTask}" render="panelBox">
+                        <a4j:param name="id" value="#{todo.id}"/>
+                    </a4j:ajax>
+                </h:selectBooleanCheckbox>
+            </rich:column>
+            <rich:column>
+                <h:outputText value="#{todo.task}"/>
+            </rich:column>
+            <rich:column>
+                <h:form>
+                <a4j:commandButton  value="x" action="#{helloController.deleteTask}" render="panelBox" >
+                    <a4j:param name="id" value="#{todo.id}"/>
+                </a4j:commandButton>
+                </h:form>
+            </rich:column>
+        </rich:dataTable>
+    </h:panelGrid>
+    <h:panelGrid id="panelBoxInfo">
+        <rich:column>
+            <h:outputText value="#{helloController.countLeft}"/>
+            Item Left
+        </rich:column>
+
+        <rich:column>
+            <h:outputText value="#{todo.task}"/>
+        </rich:column>
+    </h:panelGrid>
+
+</f:view>
+</html>
